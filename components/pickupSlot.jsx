@@ -10,6 +10,25 @@ const PickupSlot = () => {
   const [selectedDeliveryTime, setSelectedDeliveryTime] = useState(null)
   const [selectedDate, setSelectedDate] = useState(moment())
 
+  const pickupTimeOptions = [
+    {
+      startTime: "6.30 AM",
+      endTime: "9.00 AM",
+    },
+    {
+      startTime: "9.00 AM",
+      endTime: "11.30 AM",
+    },
+    {
+      startTime: "5.00 PM",
+      endTime: "7.30 PM",
+    },
+    {
+      startTime: "7.30 PM",
+      endTime: "10.00 PM",
+    },
+  ]
+
   const getNext6Days = () => {
     const nextDays = []
 
@@ -52,6 +71,8 @@ const PickupSlot = () => {
     ))
   }
 
+  const renderPickupTime = () => {}
+
   //   console.log(currentDate)
   return (
     <View style={styles.container}>
@@ -77,6 +98,9 @@ const PickupSlot = () => {
       {/* pickup time */}
       <View>
         <Text>PickUp Time Options</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 5 }}>
+          {renderPickupTime()}
+        </View>
       </View>
     </View>
   )
