@@ -1,5 +1,6 @@
 import {
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,10 +10,31 @@ import React, { useState } from "react"
 import { Entypo, Feather, Ionicons } from "@expo/vector-icons"
 import { useRouter } from "expo-router"
 import AddressContainer from "@/components/addressContainer"
+import PickupSlot from "@/components/pickupSlot"
 
 const Address = () => {
   const router = useRouter()
   const [select, setSelect] = useState(false)
+  const [step, setStep] = useState(1)
+
+  const handleBack = () => {
+    setStep((prevStep) => (prevStep > 1 ? prevStep - 1 : prevStep))
+  }
+
+  const handleNext = () => {
+    setStep((prevStep) => {
+      const nextStep = prevStep + 1
+      console.log("next Step ", nextStep)
+
+      // check if next step equal to 4
+      if (nextStep == 4) {
+        // call the place order function
+      }
+
+      return nextStep
+    })
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -66,24 +88,24 @@ const Address = () => {
           style={{
             width: 50,
             height: 50,
-            backgroundColor: "grey",
+            backgroundColor: "#F5F5F5",
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
           }}>
-          <Ionicons name="location-outline" size={24} color="white" />
+          <Ionicons name="location-outline" size={24} color="#0066B2" />
         </Pressable>
 
         <Pressable
           style={{
             width: 50,
             height: 50,
-            backgroundColor: "grey",
+            backgroundColor: "#F5F5F5",
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
           }}>
-          <Entypo name="back-in-time" size={24} color="white" />
+          <Entypo name="back-in-time" size={24} color="#0066B2" />
         </Pressable>
 
         <Pressable
@@ -98,16 +120,51 @@ const Address = () => {
           <Ionicons name="chevron-forward" size={24} color="white" />
         </Pressable>
       </View>
-      {/* add new address and map Address */}
-      <View style={styles.addressContainer}>
-        <TouchableOpacity
-          style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-          <Feather name="plus" size={24} color="black" />
-          <Text>Add Address</Text>
-        </TouchableOpacity>
-        <View style={styles.addressList}>
-          <AddressContainer />
-        </View>
+      {/* everything */}
+      <View style={styles.everything}>
+        <ScrollView>
+          {step == 1 && (
+            <View>
+              <TouchableOpacity
+                style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+                <Feather name="plus" size={24} color="black" />
+                <Text>Add Address</Text>
+              </TouchableOpacity>
+              <View style={styles.addressList}>
+                <AddressContainer />
+              </View>
+            </View>
+          )}
+          {step == 2 && <PickupSlot />}
+        </ScrollView>
+      </View>
+
+      {/* back and next buttons */}
+      <View style={styles.footer}>
+        <Pressable
+          disabled={step === 1}
+          onPress={handleBack}
+          style={{
+            padding: 15,
+            borderRadius: 10,
+            backgroundColor: "#d0d0d0",
+            flex: 1,
+          }}>
+          <Text style={{ textAlign: "center", fontWeight: "500" }}>Back</Text>
+        </Pressable>
+        <Pressable
+          onPress={handleNext}
+          style={{
+            padding: 15,
+            borderRadius: 10,
+            backgroundColor: "#0066b2",
+            flex: 1,
+          }}>
+          <Text
+            style={{ textAlign: "center", fontWeight: "500", color: "white" }}>
+            {step === 4 ? "Place Order" : "Next"}
+          </Text>
+        </Pressable>
       </View>
     </View>
   )
@@ -126,10 +183,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 20,
   },
-  addressContainer: {
+  everything: {
     padding: 10,
+    flex: 1,
+    backgroundColor: "#f0f8ff",
   },
   addressList: {
     marginTop: 10,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 10,
+    padding: 12,
+    backgroundColor: "white",
   },
 })
