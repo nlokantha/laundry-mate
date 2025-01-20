@@ -3,12 +3,19 @@ import React, { useState } from "react"
 import { Ionicons } from "@expo/vector-icons"
 import moment from "moment"
 
-const PickupSlot = () => {
-  const [currentDate, setCurrentDate] = useState(moment())
-  const [deliveryDate, setDeliveryDate] = useState(moment())
-  const [selectedTime, setSelectedTime] = useState(null)
-  const [selectedDeliveryTime, setSelectedDeliveryTime] = useState(null)
-  const [selectedDate, setSelectedDate] = useState(moment())
+const PickupSlot = ({
+  currentDate,
+  setCurrentDate,
+  selectedDate ,
+  setSelectedDate,
+  selectedTime ,
+  setSelectedTime ,
+}) => {
+  // const [currentDate, setCurrentDate] = useState(moment())
+  // const [deliveryDate, setDeliveryDate] = useState(moment())
+  // const [selectedTime, setSelectedTime] = useState(null)
+  // const [selectedDeliveryTime, setSelectedDeliveryTime] = useState(null)
+  // const [selectedDate, setSelectedDate] = useState(moment())
 
   const pickupTimeOptions = [
     {
@@ -71,7 +78,49 @@ const PickupSlot = () => {
     ))
   }
 
-  const renderPickupTime = () => {}
+  const renderPickupTime = () => {
+    if(selectedDate){
+      const isCurrentDate = selectedDate.isSame(currentDate,"day")
+
+      const currentTime = moment()
+
+      return pickupTimeOptions.map((option,index)=>{
+        // console.log(option)
+
+        const startTime = moment(selectedDate.format("YYYY-MM-DD")+" "+option.startTime,"YYYY-MM-DD LT")
+
+        const isTimeSlotPast = isCurrentDate && startTime.isBefore(currentDate)
+
+        return (
+          <TouchableOpacity
+          onPress={()=>{
+            if(!isTimeSlotPast){
+              setSelectedTime(option)
+            }
+          }}
+          style={{
+            padding:10,
+            margin:10,
+            borderRadius:10,
+            textDecorationLine: isTimeSlotPast ? "line-through":"none",
+            opacity:isTimeSlotPast ? 0.5:1,
+            backgroundColor:
+            selectedTime && 
+            selectedTime.startTime === option.startTime &&
+            selectedTime.endTime === option.endTime ? "#0066b2": "white"
+            }}>
+            <Text style={{
+              color:
+                 selectedTime && 
+                 selectedTime.startTime === option.startTime &&
+                 selectedTime.endTime === option.endTime ? "white": "black"
+            }}>{`${option.startTime} - ${option.endTime}`}</Text>
+          </TouchableOpacity>
+        )
+
+      })
+    }
+  }
 
   //   console.log(currentDate)
   return (
@@ -129,4 +178,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#034694",
   },
+  pickupTime:{
+    
+  }
 })
