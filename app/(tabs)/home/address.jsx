@@ -5,50 +5,51 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import React, { useState } from "react";
-import { Entypo, Feather, Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import AddressContainer from "@/components/addressContainer";
-import PickupSlot from "@/components/pickupSlot";
-import moment from "moment";
-import EditPickupSlot from "@/components/editPickupSlot";
+} from "react-native"
+import React, { useState } from "react"
+import { Entypo, Feather, Ionicons } from "@expo/vector-icons"
+import { useRouter } from "expo-router"
+import AddressContainer from "@/components/addressContainer"
+import PickupSlot from "@/components/pickupSlot"
+import moment from "moment"
+import EditPickupSlot from "@/components/editPickupSlot"
+import Details from "@/components/details"
 
 const Address = () => {
-  const router = useRouter();
-  const [select, setSelect] = useState(false);
-  const [step, setStep] = useState(1);
+  const router = useRouter()
+  const [select, setSelect] = useState(false)
+  const [step, setStep] = useState(1)
 
-  const [currentDate, setCurrentDate] = useState(moment());
-  const [deliveryDate, setDeliveryDate] = useState(moment());
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedDeliveryTime, setSelectedDeliveryTime] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(moment());
+  const [currentDate, setCurrentDate] = useState(moment())
+  const [deliveryDate, setDeliveryDate] = useState(moment())
+  const [selectedTime, setSelectedTime] = useState(null)
+  const [selectedDeliveryTime, setSelectedDeliveryTime] = useState(null)
+  const [selectedDate, setSelectedDate] = useState(moment())
 
   const handleBack = () => {
-    setStep((prevStep) => (prevStep > 1 ? prevStep - 1 : prevStep));
-  };
+    setStep((prevStep) => (prevStep > 1 ? prevStep - 1 : prevStep))
+  }
 
   const handleNext = () => {
     setStep((prevStep) => {
-      const nextStep = prevStep + 1;
-      console.log("next Step ", nextStep);
+      const nextStep = prevStep + 1
+      console.log("next Step ", nextStep)
 
       // check if next step equal to 4
-      if (nextStep == 4) {
+      if (nextStep == 5) {
         // call the place order function
+        router.push("/(tabs)/basket")
       }
 
-      return nextStep;
-    });
-  };
+      return nextStep
+    })
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View
-          style={{ backgroundColor: "white", borderRadius: 10, padding: 5 }}
-        >
+          style={{ backgroundColor: "white", borderRadius: 10, padding: 5 }}>
           <Ionicons
             onPress={() => router.back()}
             name="chevron-back"
@@ -62,14 +63,12 @@ const Address = () => {
             justifyContent: "space-between",
             flex: 1,
             alignItems: "center",
-          }}
-        >
+          }}>
           <Text style={{ fontSize: 15, fontWeight: "600" }}>
             Choose Your Address
           </Text>
           <View
-            style={{ backgroundColor: "white", borderRadius: 10, padding: 5 }}
-          >
+            style={{ backgroundColor: "white", borderRadius: 10, padding: 5 }}>
             <Entypo name="cross" size={24} color="black" />
           </View>
         </View>
@@ -83,8 +82,7 @@ const Address = () => {
           alignItems: "center",
           backgroundColor: "white",
           padding: 12,
-        }}
-      >
+        }}>
         <Pressable
           style={{
             width: 35,
@@ -93,8 +91,7 @@ const Address = () => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
-          }}
-        >
+          }}>
           <Ionicons name="chevron-back" size={24} color="white" />
         </Pressable>
         <Pressable
@@ -105,8 +102,7 @@ const Address = () => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
-          }}
-        >
+          }}>
           <Ionicons name="location-outline" size={24} color="#0066B2" />
         </Pressable>
 
@@ -118,8 +114,7 @@ const Address = () => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
-          }}
-        >
+          }}>
           <Entypo name="back-in-time" size={24} color="#0066B2" />
         </Pressable>
 
@@ -131,8 +126,7 @@ const Address = () => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
-          }}
-        >
+          }}>
           <Ionicons name="chevron-forward" size={24} color="white" />
         </Pressable>
       </View>
@@ -142,8 +136,7 @@ const Address = () => {
           {step == 1 && (
             <View>
               <TouchableOpacity
-                style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
-              >
+                style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
                 <Feather name="plus" size={24} color="black" />
                 <Text>Add Address</Text>
               </TouchableOpacity>
@@ -170,6 +163,7 @@ const Address = () => {
               setSelectedTime={setSelectedTime}
             />
           )}
+          {step == 4 && <Details />}
         </ScrollView>
       </View>
 
@@ -183,8 +177,7 @@ const Address = () => {
             borderRadius: 10,
             backgroundColor: "#d0d0d0",
             flex: 1,
-          }}
-        >
+          }}>
           <Text style={{ textAlign: "center", fontWeight: "500" }}>Back</Text>
         </Pressable>
         <Pressable
@@ -194,20 +187,18 @@ const Address = () => {
             borderRadius: 10,
             backgroundColor: "#0066b2",
             flex: 1,
-          }}
-        >
+          }}>
           <Text
-            style={{ textAlign: "center", fontWeight: "500", color: "white" }}
-          >
+            style={{ textAlign: "center", fontWeight: "500", color: "white" }}>
             {step === 4 ? "Place Order" : "Next"}
           </Text>
         </Pressable>
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default Address;
+export default Address
 
 const styles = StyleSheet.create({
   container: {
@@ -236,4 +227,4 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: "white",
   },
-});
+})
