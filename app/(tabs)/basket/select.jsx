@@ -1,8 +1,23 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { Feather, Ionicons, Octicons } from "@expo/vector-icons";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native"
+import React, { useEffect, useState } from "react"
+import { Feather, Ionicons, Octicons } from "@expo/vector-icons"
+import { router } from "expo-router"
+import SelectedOptions from "@/components/SelectedOptions"
+import Categories from "@/components/Categories"
+import Product from "@/components/Product"
 
 const Select = () => {
+  const category = ["Men", "Women", "Kids", "Houseold"]
+  const [option, setOption] = useState("Men")
+  const [selectedOption, setSelectedOption] = useState("Wash + fold")
+  const [data, setData] = useState([])
   const menData = [
     {
       id: "0",
@@ -35,7 +50,7 @@ const Select = () => {
       name: "Men Shorts",
       price: 85,
     },
-  ];
+  ]
   const womenData = [
     {
       id: "10",
@@ -68,7 +83,7 @@ const Select = () => {
       name: "Women Cloth Tops",
       price: 85,
     },
-  ];
+  ]
   const kidsData = [
     {
       id: "20",
@@ -95,7 +110,7 @@ const Select = () => {
       name: "Kids Sweater",
       price: 85,
     },
-  ];
+  ]
   const houseData = [
     {
       id: "30",
@@ -122,9 +137,27 @@ const Select = () => {
       name: "Home Pillow covers",
       price: 85,
     },
-  ];
-  const [option, setOption] = useState("Men");
-  const [selectedOption, setSelectedOption] = useState("Wash + fold");
+  ]
+
+  useEffect(() => {
+    setData(getCategoryData(option))
+  }, [option])
+
+  const getCategoryData = (option) => {
+    switch (option) {
+      case "Men":
+        return menData
+      case "Women":
+        return womenData
+      case "Kids":
+        return kidsData
+      case "Houseold":
+        return houseData
+      default:
+        return []
+    }
+  }
+
   return (
     <ScrollView>
       <View style={{ backgroundColor: "#FEBE10", padding: 12 }}>
@@ -134,10 +167,14 @@ const Select = () => {
             justifyContent: "space-between",
             alignItems: "center",
             gap: 20,
-          }}
-        >
-          <View style={{ flexDirection: "row", gap: 10,alignItems:"center" }}>
-            <Ionicons name="chevron-back" size={24} color="black" />
+          }}>
+          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+            <Ionicons
+              onPress={() => router.back()}
+              name="chevron-back"
+              size={24}
+              color="black"
+            />
             <Text>Our Laundry List</Text>
           </View>
           <View style={{ flexDirection: "row", gap: 10 }}>
@@ -146,17 +183,28 @@ const Select = () => {
           </View>
         </View>
       </View>
-
+      <SelectedOptions
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+      />
+      <Categories option={option} setOption={setOption} category={category} />
       <View>
-        <Pressable>
-            <Image style={{ width: 50, height: 50 }} source={{ uri: "https://cdn-icons-png.flaticon.com/128/7769/7769829.png" }} />
-            <Text style={{fontSize:12,marginTop:5,alignItems:"center"}}>Wash + Fold</Text>
-        </Pressable>
+        {data.map((item, index) => {
+          return (
+            <View key={index}>
+              <Product
+                item={item}
+                index={index}
+                selectedOption={selectedOption}
+              />
+            </View>
+          )
+        })}
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
-export default Select;
+export default Select
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({})

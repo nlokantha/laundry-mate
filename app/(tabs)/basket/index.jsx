@@ -1,8 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { router } from "expo-router";
+import { Pressable, StyleSheet, Text, View } from "react-native"
+import React, { useState } from "react"
+import { router } from "expo-router"
+import { useSelector } from "react-redux"
 
 const Basket = () => {
+  const cart = useSelector((state) => state.cart.cart)
+  console.log(cart)
 
   return (
     <View>
@@ -13,8 +16,7 @@ const Basket = () => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-        }}
-      >
+        }}>
         <Text style={{ fontSize: 16, fontWeight: 500, color: "white" }}>
           Basket Total
         </Text>
@@ -33,12 +35,11 @@ const Basket = () => {
           marginVertical: 20,
           marginHorizontal: 10,
           height: 200,
-        }}
-      >
+        }}>
         <Text>YOUR BASKET IS EMPTY</Text>
       </View>
       <Pressable
-        onPress={()=>router.push("/(tabs)/basket/select")}
+        onPress={() => router.push("/(tabs)/basket/select")}
         style={{
           marginTop: 30,
           padding: 15,
@@ -49,14 +50,13 @@ const Basket = () => {
           borderRadius: 10,
           marginRight: "auto",
           marginLeft: "auto",
-        }}
-      >
+        }}>
         <Text style={{ color: "white" }}>Place an Order</Text>
       </Pressable>
     </View>
-  );
-};
+  )
+}
 
-export default Basket;
+export default Basket
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({})
